@@ -1,8 +1,9 @@
 <?php
 
+namespace App\Http\Controllers;
+
 use App\Blog;
 use Illuminate\Http\Request;
-namespace App\Http\Controllers;
 
 class BlogController extends Controller
 {
