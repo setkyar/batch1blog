@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Session;
 use App\Blog;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,7 @@ class BlogController extends Controller
      */
     public function index()
     {
-        $blogs = Blog::all();
+        $blogs = Blog::latest()->get();
 
         return view('blog.index', compact('blogs'));
     }
@@ -37,7 +38,18 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'title'         => 'required',
+            'description'   => 'required',
+        ]);
+
+        $input = $request->all();
+
+        Blog::create($input);
+
+        Session::flash('success_blog', 'Blog successfully added!');
+
+        return redirect()->back();
     }
 
     /**
@@ -61,7 +73,9 @@ class BlogController extends Controller
      */
     public function edit($id)
     {
-        return view('blog.edit');
+        $blog = Blog::findOrFail($id);
+
+        return view('blog.edit', compact('blog'));
     }
 
     /**
@@ -73,7 +87,20 @@ class BlogController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $blog = Blog::findOrFail($id);
+
+        $this->validate($request, [
+            'title'         => 'required',
+            'description'   => 'required',
+        ]);
+
+        $input = $request->all();
+
+        $blog->update($input);
+
+        Session::flash('success_blog_update', 'Blog successfully updated!');
+
+        return redirect()->back();
     }
 
     /**
@@ -84,6 +111,12 @@ class BlogController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $blog = Blog::findOrFail($id);
+
+        $blog->delete();
+
+        Session::flash('blog_deleted', 'Blog Successfully deleted!');
+
+        return redirect()->route('blog.index');
     }
 }
