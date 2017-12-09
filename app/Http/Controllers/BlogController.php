@@ -16,9 +16,7 @@ class BlogController extends Controller
     {
         $blogs = Blog::all();
 
-        dd($blogs);
-
-        return view('blog.index');
+        return view('blog.index', compact('blogs'));
     }
 
     /**
@@ -50,7 +48,9 @@ class BlogController extends Controller
      */
     public function show($id)
     {
-        return view('blog.show');
+        $blog = Blog::find($id);
+
+        return view('blog.show', compact('blog'));
     }
 
     /**
