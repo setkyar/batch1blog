@@ -2,12 +2,21 @@
 
 @section('content')
 
-<h1>Welcome Home</h1>
+<h1>Welcome from My Blog</h1>
 
-<p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maiores, possimus, ullam? Deleniti dicta eaque facere, facilis in inventore mollitia officiis porro totam voluptatibus! Adipisci autem cumque enim explicabo, iusto sequi.</p>
+<p class="lead">Hi, Welcome from my blog. I am writing what I want to write here. Read or leave.</p>
 <hr>
 
-<a href="{{ route('blog.index') }}" class="btn btn-info">Blogs</a>
-<a href="{{ route('blog.create') }}" class="btn btn-primary">Add New Blog</a>
+
+@foreach($blogs as $blog)
+	<a href="/blog/{{ $blog->id }}">
+		<h1>{{ $blog->title }}</h1>
+	</a>
+	<p>
+		{{ str_limit($blog->description, 20) }}
+	</p>
+@endforeach
+
+{{ $blogs->links() }}
 
 @stop
